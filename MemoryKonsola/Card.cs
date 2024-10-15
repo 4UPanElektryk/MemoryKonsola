@@ -7,6 +7,7 @@ namespace MemoryKonsola
 		public int PairID;
 		public string HiddenText;
 		public bool IsHidden;
+		public bool AlreadyTaken;
 		private static readonly int width = 6;
 		private static readonly int height = 6;
 		public Card(int cardID, int pairID, string Text) 
@@ -25,9 +26,16 @@ namespace MemoryKonsola
 			}
 			DrawHidden(x,y);
 		}
-		public void DrawShown(int x, int y)
+		private void DrawShown(int x, int y)
 		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
+			if (AlreadyTaken)
+			{
+				Console.ForegroundColor = ConsoleColor.Green;
+			}
+			else
+			{
+				Console.ForegroundColor = ConsoleColor.Yellow;
+			}
 			Console.CursorTop = y;
 			Console.CursorLeft = x;                      Console.Write("╔═════════════╗");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║ " + HiddenText.PadRight(11) + " ║");
@@ -37,10 +45,10 @@ namespace MemoryKonsola
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║             ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║ " + HiddenText.PadLeft(11) + " ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("╚═════════════╝");
-			Console.CursorLeft = x; Console.CursorTop++; Console.Write($"Pair ID: {PairID}");
+			//Console.CursorLeft = x; Console.CursorTop++; Console.Write($"Pair ID: {PairID}");
 			Console.ResetColor();
 		}
-		public void DrawHidden(int x, int y)
+		private void DrawHidden(int x, int y)
 		{
 			Console.CursorTop = y;
 			Console.CursorLeft = x;                      Console.Write("╔═════════════╗");
@@ -51,7 +59,7 @@ namespace MemoryKonsola
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║         R   ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║           Y ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("╚═════════════╝");
-			Console.CursorLeft = x; Console.CursorTop++; Console.Write($"Pair ID: {PairID}");
+			//Console.CursorLeft = x; Console.CursorTop++; Console.Write($"Pair ID: {PairID}");
 		}
 	}
 }
