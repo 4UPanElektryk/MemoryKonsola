@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MemoryKonsola
 {
@@ -28,6 +26,14 @@ namespace MemoryKonsola
 		private int playersturn;
 		public Player whoWon;
 		public Player[] players;
+		public Game(SaveState save)
+		{
+			cards = save.cards;
+			width = save.width;
+			height = save.height;
+			playersturn = save.playersturn;
+			players = save.players;
+		}
 		public Game(int width, int height, Player[] players)
 		{
 			this.width = width;
@@ -35,6 +41,18 @@ namespace MemoryKonsola
 			this.players = players;
 			this.whoWon = null;
 			this.playersturn = 0;
+		}
+		private void TitlePage()
+		{
+            Console.WriteLine();
+
+            Console.WriteLine("Instrukcja Tutaj");
+            Console.WriteLine("Karty zaznaczamy jak w programie Excel (eg. A1, b2, ...) ");
+            Console.WriteLine("Kolumy - Litery");
+            Console.WriteLine("Wiersze - czyfry");
+            Console.WriteLine();
+            Program.WriteColor("Naciśnij Dowolny Przycisk aby Rozpocząć grę",ConsoleColor.Yellow);
+			Console.ReadKey(true);
 		}
 		private void SetCards()
 		{
@@ -84,18 +102,6 @@ namespace MemoryKonsola
 			Console.CursorTop = spacing_height * height + 1;
 			Console.CursorLeft = 0;
 		}
-		private void TitlePage()
-		{
-            Console.WriteLine();
-
-            Console.WriteLine("Instrukcja Tutaj");
-            Console.WriteLine("Karty zaznaczamy jak w programie Excel (eg. A1, b2, ...) ");
-            Console.WriteLine("Kolumy - Litery");
-            Console.WriteLine("Wiersze - czyfry");
-            Console.WriteLine();
-            Program.WriteColor("Naciśnij Dowolny Przycisk aby Rozpocząć grę",ConsoleColor.Yellow);
-			Console.ReadKey(true);
-		}
 		private bool AllCardsUncovered()
 		{
 			for (int x = 0; x < width; x++)
@@ -110,12 +116,16 @@ namespace MemoryKonsola
 			}
 			return true;
 		}
+		private (int x, int y) GetSanitizedUserInput()
+		{
+
+		}
 		public void Start()
 		{
 			SetCards();
 			TitlePage();
 			whoWon = null;
-			string input = "";
+			string input;
 			while (whoWon == null) {
 				Console.Clear();
 				Draw();

@@ -1,15 +1,13 @@
 ﻿using System;
 namespace MemoryKonsola
 {
-	internal class Card
+	public class Card
 	{
 		public int CardID;
 		public int PairID;
 		public string HiddenText;
 		public bool IsHidden;
 		public bool AlreadyTaken;
-		private static readonly int width = 6;
-		private static readonly int height = 6;
 		public Card(int cardID, int pairID, string Text) 
 		{
 			CardID = cardID;
