@@ -4,15 +4,13 @@ namespace MemoryKonsola
 	public class Card
 	{
 		public int CardID;
-		public int PairID;
-		public string HiddenText;
+		public string Text;
 		public bool IsHidden;
 		public bool AlreadyTaken;
-		public Card(int cardID, int pairID, string Text) 
+		public Card(int cardID, string Text) 
 		{
 			CardID = cardID;
-			PairID = pairID; 
-			HiddenText = Text;
+			Text = Text;
 			IsHidden = true;
 		}
 		public void Draw(int x, int y)
@@ -36,12 +34,12 @@ namespace MemoryKonsola
 			}
 			Console.CursorTop = y;
 			Console.CursorLeft = x;                      Console.Write("╔═════════════╗");
-			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║ " + HiddenText.PadRight(11) + " ║");
+			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║ " + Text.PadRight(11) + " ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║             ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║             ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║             ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║             ║");
-			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║ " + HiddenText.PadLeft(11) + " ║");
+			Console.CursorLeft = x; Console.CursorTop++; Console.Write("║ " + Text.PadLeft(11) + " ║");
 			Console.CursorLeft = x; Console.CursorTop++; Console.Write("╚═════════════╝");
 			//Console.CursorLeft = x; Console.CursorTop++; Console.Write($"Pair ID: {PairID}");
 			Console.ResetColor();

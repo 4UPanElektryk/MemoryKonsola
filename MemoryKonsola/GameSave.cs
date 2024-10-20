@@ -1,6 +1,6 @@
 ﻿namespace MemoryKonsola
 {
-	public struct SaveState
+	public struct GameSave
 	{
 		public int width;
 		public int height;
@@ -8,7 +8,7 @@
 		public int playersturn;
 		public Player[] players;
 
-		public SaveState(int width, int height, Card[,] cards, int playersturn, Player[] players)
+		public GameSave(int width, int height, Card[,] cards, int playersturn, Player[] players)
 		{
 			this.width = width;
 			this.height = height;
