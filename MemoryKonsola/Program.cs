@@ -1,18 +1,82 @@
 ﻿using System;
+using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace MemoryKonsola
 {
 	internal class Program
 	{
+		static Game game;
+		static string SavesDir = AppDomain.CurrentDomain.BaseDirectory + "Saves\\";
 		static void Main(string[] args)
 		{
 			Console.OutputEncoding = Encoding.UTF8;
-			Game game = new Game();
-			game.Start();
+			game = null;
+			Menu();
 			Console.Clear();
 		}
-		private void TitlePage()
+		static void Menu()
+		{
+			while (true)
+			{
+				Console.ResetColor();
+				Console.Clear();
+				Console.WriteLine("Podaj Akcję: ");
+				Console.WriteLine("0. Wyjdź");
+				Console.WriteLine("1. Jak Grać?");
+				Console.WriteLine("2. Nowa Gra");
+				if (Directory.Exists(SavesDir))
+				{
+					Console.WriteLine("3. Wczytaj Grę");
+				}
+				if (game != null && game.whoWon == null)
+				{
+					Console.WriteLine("4. Zapisz Grę");
+					Console.WriteLine("5. Kontynuuj Grę");
+				}
+
+				switch (Console.ReadKey().Key)
+				{
+					case ConsoleKey.D0:
+					case ConsoleKey.NumPad0:
+						return;
+					case ConsoleKey.D1:
+					case ConsoleKey.NumPad1:
+						TitlePage();
+						break;
+					case ConsoleKey.D2:
+					case ConsoleKey.NumPad2:
+						NewGame();
+						game.Start();
+						break;
+
+					case ConsoleKey.D3:
+					case ConsoleKey.NumPad3:
+						if (LoadGame())
+						{
+							game.Start();
+						}
+						break;
+					case ConsoleKey.D4:
+					case ConsoleKey.NumPad4:
+						SaveGame();
+						break;
+					case ConsoleKey.D5:
+					case ConsoleKey.NumPad5:
+						game.Start();
+						break;
+					default:
+						Console.WriteLine("Podaj Poprawną akcję!");
+						Console.ReadKey(true);
+						break;
+				}
+			}
+
+
+		}
+		
+		static void TitlePage()
 		{
 			Console.WriteLine();
 
@@ -21,16 +85,10 @@ namespace MemoryKonsola
 			Console.WriteLine("Kolumy - Litery");
 			Console.WriteLine("Wiersze - czyfry");
 			Console.WriteLine();
-			Program.WriteColor("Naciśnij Dowolny Przycisk aby Rozpocząć grę", ConsoleColor.Yellow);
+			Program.WriteColor("Naciśnij Dowolny Przycisk aby zamknąć", ConsoleColor.Yellow);
 			Console.ReadKey(true);
 		}
-		internal static void WriteColor(string text, ConsoleColor color = ConsoleColor.Gray)
-		{
-			Console.ForegroundColor = color;
-			Console.Write(text);
-			Console.ResetColor();
-		}
-		private void NewGame()
+		static void NewGame()
 		{
 			Console.ResetColor();
 			Console.Clear();
@@ -71,61 +129,64 @@ namespace MemoryKonsola
 						break;
 				}
 			}
-			this.width = x;
-			this.height = y;
-			this.players = new Player[] { player1, player2 };
-			this.whoWon = null;
-			this.playersturn = 0;
+			game = new Game(x, y, new Player[] { player1, player2 });
 			Console.Clear();
 		}
-		private void Menu(bool isIngame = false)
+		static void SaveGame()
 		{
-			while (true)
+			GameSave save = game.Save();
+			if (!Directory.Exists(SavesDir))
 			{
-				Console.BackgroundColor = ConsoleColor.Blue;
-				Console.ForegroundColor = ConsoleColor.Gray;
-				Console.Clear();
-				Console.WriteLine("Podaj Akcję: ");
-				Console.WriteLine("0. Wyjdź");
-				Console.WriteLine("1. Jak Grać?");
-				Console.WriteLine("2. Nowa Gra");
-				Console.WriteLine("3. Wczytaj Grę");
-				if (isIngame)
-				{
-					Console.WriteLine("4. Zapisz Grę");
-				}
-
-				switch (Console.ReadKey().Key)
-				{
-					case ConsoleKey.D0:
-					case ConsoleKey.NumPad0:
-						Environment.Exit(0);
-						break;
-					case ConsoleKey.D1:
-					case ConsoleKey.NumPad1:
-						TitlePage();
-						return;
-					case ConsoleKey.D2:
-					case ConsoleKey.NumPad2:
-						NewGame();
-						return;
-					case ConsoleKey.D3:
-					case ConsoleKey.NumPad3:
-
-						break;
-					default:
-						Console.WriteLine("Podaj Poprawną akcję!");
-						Console.ReadKey(true);
-						break;
-				}
+				Directory.CreateDirectory(SavesDir);
 			}
-
-
+			Console.Clear();
+			Program.WriteColor("Podaj Nazwę dla tego zapisu: ", ConsoleColor.Yellow);
+			string name = Console.ReadLine();
+			name = name
+				.Replace("<", "")
+				.Replace(">", "")
+				.Replace(":", "")
+				.Replace("\"", "")
+				.Replace("/", "")
+				.Replace("\\", "")
+				.Replace("|", "")
+				.Replace("?", "")
+				.Replace("*", ""); //Zabronione zanki w nazwie pliku
+			File.WriteAllText(SavesDir + name + ".json", JsonConvert.SerializeObject(save));
+			Program.WriteColor("Zapisano pomyślnie jako: " + SavesDir + name + ".json", ConsoleColor.Yellow);
 		}
-
-		private void LoadGame()
+		static bool LoadGame()
 		{
+			string[] files = Directory.GetFiles(SavesDir);
+			Console.Clear();
+            Console.WriteLine($"Wybierz zapis: (0 - {files.Length})");
+            Console.WriteLine("0. Powróć do menu");
+            Console.WriteLine();
 
+			for (int i = 0; i < files.Length; i++)
+			{
+                Console.WriteLine($"{i+1}. {Path.GetFileName(files[i])}");
+			}
+            Console.WriteLine();
+			string input = Console.ReadLine();
+			int t = 0;
+			while((!int.TryParse(input, out t) || t < 0) && t-1 < files.Length)
+			{
+                Console.Write("Niepoprawna wartość! Podaj Ponownie: ");
+				input = Console.ReadLine();
+			}
+			if (t == 0)
+			{
+				return false;
+			}
+			game = new Game(JsonConvert.DeserializeObject<GameSave>(File.ReadAllText(files[t-1])));
+			return true;
+		}
+		internal static void WriteColor(string text, ConsoleColor color = ConsoleColor.Gray)
+		{
+			Console.ForegroundColor = color;
+			Console.Write(text);
+			Console.ResetColor();
 		}
 	}
 }

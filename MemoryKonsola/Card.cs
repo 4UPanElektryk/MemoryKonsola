@@ -3,15 +3,15 @@ namespace MemoryKonsola
 {
 	public class Card
 	{
-		public int CardID;
-		public string Text;
-		public bool IsHidden;
-		public bool AlreadyTaken;
+		public int CardID { get; set; }
+		public string Text { get; set; }
+		public bool IsHidden { get; set; }
+		public bool AlreadyTaken { get; set; }
 		public Card(int cardID, string Text) 
 		{
-			CardID = cardID;
-			Text = Text;
-			IsHidden = true;
+			this.CardID = cardID;
+			this.Text = Text;
+			this.IsHidden = true;
 		}
 		public void Draw(int x, int y)
 		{
