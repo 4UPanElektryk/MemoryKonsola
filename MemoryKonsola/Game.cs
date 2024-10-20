@@ -72,7 +72,7 @@ namespace MemoryKonsola
 				width = Width,
 				height = Height,
 				cards = Cards,
-				playersturn=playersturn,
+				playersturn = playersturn,
 				players = Players,
 			};
 		}
