@@ -219,13 +219,13 @@ namespace MemoryKonsola
 				string input = "";
 				bool wasvalid = false;
 				int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-				while (!Regex.IsMatch(input, "[a-h][1-8]|^exit$|^menu$") || !wasvalid)
+				while (!Regex.IsMatch(input, $"[a-{(char)('a'+Width - 1)}][1-{Height}]|^exit$|^menu$") || !wasvalid)
 				{
 					Draw();
 					Program.WriteColor($"Gracz {current.Name} podaj pierwszą kartę lub wyjdź (Menu): ");
 					input = Console.ReadLine().ToLower();
 					if (input == "menu" | input == "exit") { return; }
-					else if (Regex.IsMatch(input, "[a-h][1-8]"))
+					else if (Regex.IsMatch(input, $"[a-{(char)('a' + Width - 1)}][1-{Height}]"))
 					{
 						x1 = input[0] - 'a';
 						y1 = int.Parse(input[1].ToString()) - 1;
@@ -235,12 +235,12 @@ namespace MemoryKonsola
 				Cards[x1,y1].IsHidden = false;
 				input = "";
 				wasvalid = false;
-				while (!Regex.IsMatch(input, "[a-h][1-8]") || !wasvalid)
+				while (!Regex.IsMatch(input, $"[a-{(char)('a' + Width - 1)}][1-{Height}]") || !wasvalid)
 				{
 					Draw();
 					Program.WriteColor($"Gracz {current.Name} podaj Drugą kartę: ");
 					input = Console.ReadLine().ToLower();
-					if (Regex.IsMatch(input, "[a-h][1-8]"))
+					if (Regex.IsMatch(input, $"[a-{(char)('a' + Width - 1)}][1-{Height}]"))
 					{
 						x2 = input[0] - 'a';
 						y2 = int.Parse(input[1].ToString()) - 1;
