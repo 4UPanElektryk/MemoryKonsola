@@ -75,7 +75,6 @@ namespace MemoryKonsola
 
 
 		}
-		
 		static void TitlePage()
 		{
 			Console.WriteLine();
