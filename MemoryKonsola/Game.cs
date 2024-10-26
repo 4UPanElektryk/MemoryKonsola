@@ -247,7 +247,7 @@ namespace MemoryKonsola
 				while (!Regex.IsMatch(input, $"[a-{(char)('a'+Width - 1)}][1-{Height}]|^exit$|^menu$") || !wasvalid)
 				{
 					Draw();
-					Program.WriteColor($"Gracz {current.Name} podaj pierwszą kartę lub wyjdź (Menu): ");
+					Program.WriteColor($"Gracz {current.Name} podaj pierwszą kartę lub otwórz [Menu]: ");
 					input = Console.ReadLine().ToLower();
 					if (input == "menu" | input == "exit") { return; }
 					else if (Regex.IsMatch(input, $"[a-{(char)('a' + Width - 1)}][1-{Height}]"))
