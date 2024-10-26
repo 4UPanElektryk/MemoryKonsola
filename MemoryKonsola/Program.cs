@@ -154,6 +154,7 @@ namespace MemoryKonsola
 				.Replace("*", ""); //Zabronione zanki w nazwie pliku
 			File.WriteAllText(SavesDir + name + ".json", JsonConvert.SerializeObject(save));
 			Program.WriteColor("Zapisano pomyślnie jako: " + SavesDir + name + ".json", ConsoleColor.Yellow);
+			Console.ReadKey(true);
 		}
 		static bool LoadGame()
 		{

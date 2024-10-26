@@ -102,24 +102,55 @@ namespace MemoryKonsola
 			int spacingHeight = 9;
 			int leftOffset = 6;
 			int topOffset = 4;
-			Console.WindowWidth = Width > 3 ? Width * spacingWidth + leftOffset : 3 * spacingWidth + leftOffset;
-			Console.WindowHeight = Height * spacingHeight + topOffset + 1;
+			int requiredWidth = Width > 3 ? Width * spacingWidth + leftOffset : 3 * spacingWidth + leftOffset;
+			int requiredHeight = Height * spacingHeight + topOffset + 1; // +1 to linijka z nazwami i punktami graczy
+
+			int oldWindowWidth = 0;
+			int oldWindowHeight = 0;
+			while (Console.WindowWidth < requiredWidth || Console.WindowHeight < requiredHeight)
+			{
+				if (!(oldWindowWidth != Console.WindowWidth || oldWindowHeight != Console.WindowHeight)) { Debug.WriteLine("Window Size not changed");  continue; }// sprawdzanie czy rozmiar okna się zmienił
+				else
+				{
+					oldWindowHeight = Console.WindowHeight;
+					oldWindowWidth = Console.WindowWidth;
+				}
+				Console.Clear();
+				Console.Write("Szerokość okna: ");
+				if (Console.WindowWidth < requiredWidth)
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+				}
+				else
+				{
+					Console.ForegroundColor = ConsoleColor.Green;
+				}
+                Console.Write(Console.WindowWidth);
+				Console.ResetColor();
+                Console.WriteLine($" Wymagana: {requiredWidth}");
+				Console.Write("Wysokość okna: ");
+				if (Console.WindowHeight < requiredHeight)
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+				}
+				else
+				{
+					Console.ForegroundColor = ConsoleColor.Green;
+				}
+				Console.Write(Console.WindowHeight);
+				Console.ResetColor();
+				Console.WriteLine($" Wymagana: {requiredHeight}");
+			}
 			Console.Clear();
 			#region Grid
 			Console.CursorTop = 1;
 			Console.CursorLeft = 0;
-			Console.Write("───╥");
-			for (int i = 4; i < Console.WindowWidth; i++)
+			Console.Write("───╥─");
+			for (int i = 0; i < Width; i++)
 			{
-				if (i == Console.WindowWidth - 1)
-				{
-					Console.Write($"╥");
-				}
-				else
-				{
-					Console.Write("─");
-				}
+				Console.Write("─────────────────");
 			}
+			Console.Write($"╥");
 			Console.CursorTop++;
 			Console.CursorLeft = 3;
             Console.Write("║ ");
@@ -134,18 +165,12 @@ namespace MemoryKonsola
 			}
 			Console.CursorTop++;
 			Console.CursorLeft = 0;
-			Console.Write("═══╬");
-			for (int i = 4; i < Console.WindowWidth; i++)
+			Console.Write("═══╬═");
+			for (int i = 0; i < Width; i++)
 			{
-				if (i == Console.WindowWidth - 1)
-				{
-                    Console.Write("╝");
-				}
-				else
-				{
-					Console.Write("═");
-				}
+				Console.Write("═════════════════");
 			}
+            Console.Write("╝");
 			Console.CursorTop++;
 			Console.CursorLeft = 0;
 			for (int y = 0; y < Height; y++)
