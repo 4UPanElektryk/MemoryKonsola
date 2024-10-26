@@ -51,19 +51,19 @@ namespace MemoryKonsola
 						game.Start();
 						break;
 
-					case ConsoleKey.D3:
-					case ConsoleKey.NumPad3:
+					case ConsoleKey.D3 when Directory.Exists(SavesDir):
+					case ConsoleKey.NumPad3 when Directory.Exists(SavesDir):
 						if (LoadGame())
 						{
 							game.Start();
 						}
 						break;
-					case ConsoleKey.D4:
-					case ConsoleKey.NumPad4:
+					case ConsoleKey.D4 when game != null && game.whoWon == null:
+					case ConsoleKey.NumPad4 when game != null && game.whoWon == null:
 						SaveGame();
 						break;
-					case ConsoleKey.D5:
-					case ConsoleKey.NumPad5:
+					case ConsoleKey.D5 when game != null && game.whoWon == null:
+					case ConsoleKey.NumPad5 when game != null && game.whoWon == null:
 						game.Start();
 						break;
 					default:
