@@ -108,7 +108,7 @@ namespace MemoryKonsola
 			int oldWindowHeight = 0;
 			while (Console.WindowWidth < requiredWidth || Console.WindowHeight < requiredHeight)
 			{
-				if (!(oldWindowWidth != Console.WindowWidth || oldWindowHeight != Console.WindowHeight)) { Debug.WriteLine("Window Size not changed");  continue; }// sprawdzanie czy rozmiar okna się zmienił
+				if (!(oldWindowWidth != Console.WindowWidth || oldWindowHeight != Console.WindowHeight)) { continue; }// sprawdzanie czy rozmiar okna się zmienił
 				else
 				{
 					oldWindowHeight = Console.WindowHeight;

@@ -77,14 +77,31 @@ namespace MemoryKonsola
 		}
 		static void TitlePage()
 		{
+			Console.Clear();
+			Console.WriteLine("MemoryKonsola by Maciej Cichocki");
+			Card card1 = new Card(0, "text");
+			card1.IsHidden = true;
+			Card card2 = new Card(0, "odkryta");
+			card2.IsHidden = false;
+			card1.Draw(0, 1);
+			card2.Draw(17, 1);
+			Console.CursorTop = 9;
+            Console.WriteLine("Przykładowa zakryta karta i Odkryta karta");
 			Console.WriteLine();
-
-			Console.WriteLine("Instrukcja Tutaj");
-			Console.WriteLine("Karty zaznaczamy jak w programie Excel (eg. A1, b2, ...) ");
-			Console.WriteLine("Kolumy - Litery");
-			Console.WriteLine("Wiersze - czyfry");
-			Console.WriteLine();
-			Program.WriteColor("Naciśnij Dowolny Przycisk aby zamknąć", ConsoleColor.Yellow);
+            Console.WriteLine();
+            Console.WriteLine("Instrukcja");
+            Console.WriteLine();
+			Console.WriteLine("Karty wybieramy poprzez wpisywanie najpierw kolumny karty ");
+            Console.WriteLine("od A do H a wiersze od 1 do 8");
+            Console.WriteLine("Przykładowe koordynaty karty: ");
+            Console.WriteLine("- A1");
+            Console.WriteLine("- B5");
+			Console.WriteLine("- H1");
+			Console.WriteLine("- D8");
+            Console.WriteLine();
+            Console.WriteLine("Za każdą odkrytą parą gracz dostaje punkt");
+			Console.WriteLine("Wygrywa gracz z największą ilością punktów po odkryciu wszystkich kart");
+			Program.WriteColor("Naciśnij dowolny przycisk aby zamknąć", ConsoleColor.Yellow);
 			Console.ReadKey(true);
 		}
 		static void NewGame()
@@ -105,7 +122,7 @@ namespace MemoryKonsola
 			Console.WriteLine("7. 6x7");
 			Console.WriteLine("8. 7x8");
 			Console.WriteLine("9. 8x8");
-			Program.WriteColor("Wybierz Wymiary Planszy (1-8): ", ConsoleColor.Yellow);
+			Program.WriteColor("Wybierz Wymiary Planszy (0-9): ", ConsoleColor.Yellow);
 			int x = 0, y = 0;
 			bool ok = false;
 			while (!ok)
@@ -159,7 +176,7 @@ namespace MemoryKonsola
 		{
 			string[] files = Directory.GetFiles(SavesDir);
 			Console.Clear();
-            Console.WriteLine($"Wybierz zapis: (0 - {files.Length})");
+            Console.WriteLine($"Zapis: (0 - {files.Length})");
             Console.WriteLine("0. Powróć do menu");
             Console.WriteLine();
 
@@ -168,6 +185,7 @@ namespace MemoryKonsola
                 Console.WriteLine($"{i+1}. {Path.GetFileName(files[i])}");
 			}
             Console.WriteLine();
+			Program.WriteColor("Podaj zapis do wczytania lub 0 by wrócić: ", ConsoleColor.Yellow);
 			string input = Console.ReadLine();
 			int t = 0;
 			while((!int.TryParse(input, out t) || t < 0) && t-1 < files.Length)
